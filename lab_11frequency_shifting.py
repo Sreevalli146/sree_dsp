@@ -1,0 +1,30 @@
+import numpy as np
+import matplotlib.pyplot as plt
+x1=[1,2,3,4,5]
+n=len(x1)
+for i in range(n):
+    x1[i]=np.exp(1j*3*n)*x1[i]
+def dtft(x,n):
+    w=np.arange(-np.pi,np.pi,0.01)
+    X=np.zeros(len(w),dtype=complex)
+    for k in range(len(w)):
+        X[k]=sum(x[i]*np.exp(-1j*w[k]*i) for i in range(n))
+    return w,X
+
+w,X1=dtft(x1,n)
+
+plt.title("X1(W)")
+plt.plot(w,np.abs(X1))
+
+a=[0,0,0]
+x=x1.copy()
+w,X=dtft(x,n)
+for i in a:
+    X+=i
+X=np.roll(X,3)
+plt.figure(figsize=(8,4))
+plt.title("X(W)")
+plt.plot(w,np.abs(X),color='gold')
+plt.show()
+if(X.all()==X1.all()):
+    print("frequency shift verified")
